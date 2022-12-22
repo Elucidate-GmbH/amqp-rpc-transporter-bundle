@@ -18,10 +18,11 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
-    "symfony/framework-bundle": ">=4.0",
-    "symfony/messenger": ">=4.3-dev",
-    "ext-amqp": "*"
+    "php": "^8.0",
+    "symfony/framework-bundle": "^5.4",
+    "symfony/messenger": "^6.0",
+    "ext-amqp": "*",
+    "symfony/amqp-messenger": "^6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "*",

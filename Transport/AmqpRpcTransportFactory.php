@@ -18,6 +18,6 @@ class AmqpRpcTransportFactory implements TransportFactoryInterface
 
     public function supports(string $dsn, array $options): bool
     {
-        return 0 === strpos($dsn, 'amqp-rpc://');
+        return str_starts_with($dsn, 'amqp-rpc://');
     }
 }

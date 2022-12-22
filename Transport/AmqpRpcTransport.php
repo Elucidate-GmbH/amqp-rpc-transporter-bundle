@@ -3,15 +3,13 @@
 namespace Leberknecht\AmqpRpcTransporterBundle\Transport;
 
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Transport\AmqpExt\AmqpTransport;
-use Symfony\Component\Messenger\Transport\AmqpExt\Connection;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpTransport;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\Connection;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
-class AmqpRpcTransport extends AmqpTransport implements TransportInterface
+class AmqpRpcTransport extends AmqpTransport
 {
-    /** @var AmqpRpcTransceiver $transceiver */
-    private $transceiver = null;
+    private ?AmqpRpcTransceiver $transceiver = null;
 
     public function __construct(Connection $connection, SerializerInterface $serializer = null)
     {
@@ -19,7 +17,7 @@ class AmqpRpcTransport extends AmqpTransport implements TransportInterface
         parent::__construct($connection, $serializer);
     }
 
-    public function setTransceiver(AmqpRpcTransceiver $transceiver)
+    public function setTransceiver(AmqpRpcTransceiver $transceiver): void
     {
         $this->transceiver = $transceiver;
     }
@@ -45,6 +43,6 @@ class AmqpRpcTransport extends AmqpTransport implements TransportInterface
      */
     public function send(Envelope $envelope): Envelope
     {
-        return $this->transceiver->send($envelope, rand());
+        return $this->transceiver->send($envelope, mt_rand());
     }
 }
