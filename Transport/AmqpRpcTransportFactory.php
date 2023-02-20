@@ -2,7 +2,7 @@
 
 namespace Leberknecht\AmqpRpcTransporterBundle\Transport;
 
-use Symfony\Component\Messenger\Transport\AmqpExt\Connection;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\Connection;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -18,6 +18,6 @@ class AmqpRpcTransportFactory implements TransportFactoryInterface
 
     public function supports(string $dsn, array $options): bool
     {
-        return 0 === strpos($dsn, 'amqp-rpc://');
+        return str_starts_with($dsn, 'amqp-rpc://');
     }
 }

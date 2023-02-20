@@ -2,43 +2,35 @@
 
 namespace Leberknecht\AmqpRpcTransporterBundle\Tests\Transport;
 
+use AMQPChannel;
 use AMQPEnvelope;
 use AMQPExchange;
+use AMQPQueue;
 use Leberknecht\AmqpRpcTransporterBundle\Transport\AmqpRpcTransceiver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Symfony\Component\Messenger\Transport\AmqpExt\AmqpFactory;
-use Symfony\Component\Messenger\Transport\AmqpExt\AmqpReceivedStamp;
-use Symfony\Component\Messenger\Transport\AmqpExt\Connection;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpFactory;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\Connection;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpReceivedStamp;
 
 class AmqpRpcTransceiverTest extends TestCase
 {
-    /**
-     * @var MockObject | Connection
-     */
-    private $connectionMock;
-    /**
-     * @var AmqpRpcTransceiver
-     */
-    private $amqpRpcTransceiver;
-    /**
-     * @var MockObject | AmqpFactory
-     */
-    private $amqpFactoryMock;
-    /**
-     * @var MockObject | AMQPExchange
-     */
-    private $exchangeMock;
+    private AmqpRpcTransceiver $amqpRpcTransceiver;
+
+    private MockObject | AmqpFactory $amqpFactoryMock;
+
+    private MockObject | AMQPExchange $exchangeMock;
 
     public function setUp(): void
     {
-        $this->connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $connectionMock = $this->createMock(Connection::class);
+
         $this->amqpFactoryMock = $this->getMockBuilder(AmqpFactory::class)->disableOriginalConstructor()->getMock();
         $this->exchangeMock = $this->getMockBuilder(AMQPExchange::class)->disableOriginalConstructor()->getMock();
         $this->amqpRpcTransceiver = new AmqpRpcTransceiver(
-            $this->connectionMock
+            $connectionMock
         );
 
         $this->amqpRpcTransceiver->setExchange($this->exchangeMock);
@@ -47,7 +39,7 @@ class AmqpRpcTransceiverTest extends TestCase
 
     public function testSend()
     {
-        $queueMock = $this->getMockBuilder(\AMQPQueue::class)->disableOriginalConstructor()->getMock();
+        $queueMock = $this->getMockBuilder(AMQPQueue::class)->disableOriginalConstructor()->getMock();
         $properties = $this->getMockBuilder(AMQPEnvelope::class)->disableOriginalConstructor()->getMock();
         $correlationId = 42;
         $properties->expects($this->once())->method('getCorrelationId')->willReturn($correlationId);
