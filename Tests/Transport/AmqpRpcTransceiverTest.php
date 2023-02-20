@@ -37,9 +37,6 @@ class AmqpRpcTransceiverTest extends TestCase
         $this->amqpRpcTransceiver->setAmqpFactory($this->amqpFactoryMock);
     }
 
-    /**
-     * @group alma
-     */
     public function testSend()
     {
         $queueMock = $this->getMockBuilder(AMQPQueue::class)->disableOriginalConstructor()->getMock();
